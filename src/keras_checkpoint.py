@@ -2,6 +2,8 @@ import json
 import warnings
 import numpy as np
 import os
+import uuid
+import hashlib
 import keras
 
 class KerasCheckpoint(keras.callbacks.Callback):
@@ -71,13 +73,13 @@ class KerasCheckpoint(keras.callbacks.Callback):
 
         for k, v in logs.items():
             self.stats[k] = v
-
+        self.stats['epoch'] = epoch
+	snapshot_id = hashlib.sha1(str(uuid.uuid4()).encode("UTF=8")).hexdigest()[:10]
         self.epochs_since_last_save += 1
 
         if self.epochs_since_last_save >= self.period:
             self.epochs_since_last_save = 0
-            snapshot_path = self.snapshots_directory + "/{epoch:02d}"
-            snapshot_directory = snapshot_path.format(epoch=epoch, **logs)
+            snapshot_directory = self.snapshots_directory + "/" + snapshot_id
             if not os.path.exists(snapshot_directory):
                 os.makedirs(snapshot_directory)
             model_filepath = snapshot_directory + '/model.hdf5'
@@ -113,5 +115,3 @@ class KerasCheckpoint(keras.callbacks.Callback):
                 self.model.save_weights(model_filepath, overwrite=True)
                 with open(stats_filepath, 'wb') as f:
                     f.write(json.dumps(self.stats))
-
-
