@@ -33,4 +33,5 @@ COPY src /home/src
 RUN find /home/src/scripts -name "*.sh" -exec chmod +x {} +
 
 # Working directory: this is where unix scripts will run from
+EXPOSE 8888
 WORKDIR /home/src

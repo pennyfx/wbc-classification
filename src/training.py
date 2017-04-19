@@ -21,7 +21,7 @@ epochs = 20
 with open(os.environ['INPUT_DIR'] + '/config.json') as f:
     config = json.load(f)
 
-BASE_PATH = '../'
+BASE_PATH = os.environ['INPUT_DIR'] + '/'
 batch_size = 32
 
 
@@ -128,8 +128,11 @@ accuracy = accuracy_score(y_test, y_pred)
 
 y_pred_unencoded = np.argmax(y_pred, axis=1)
 y_test_unencoded = np.argmax(y_test, axis=1)
-stats = {}
-stats['']
+
+stats={}
+stats['accuracy'] = accuracy
+stats['label'] = 'lenet_cnn'
+
 print(confusion_matrix(y_test_unencoded, y_pred_unencoded))
 
 encoder.inverse_transform([0, 1, 2, 3, 4])
