@@ -16,8 +16,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 
-num_classes = 5
-epochs = 20
+epochs = 4
 
 if os.path.exists(os.environ['INPUT_DIR'] + '/config.json'):
     with open(os.environ['INPUT_DIR'] + '/config.json') as f:
@@ -58,6 +57,7 @@ def get_model():
 model = get_model()
 print(model.summary())
 
+
 def get_data(folder):
     """
     Load the data and labels from the given folder.
@@ -94,7 +94,7 @@ y_test = encoder.transform(y_test)
 
 model = get_model()
 
-# Use for acusense tracking
+# Use for datmo tracking
 snapshot_path = os.environ['SNAPSHOTS_DIR']
 checkpoint = KerasCheckpoint(snapshot_path, label='cnn', monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint]
